@@ -70,7 +70,7 @@ export interface IBlogRepositories {
   deleteBlogEmail(email: string, data: IUpdateBlog): Promise<unknown | IBlog>;
   getBlogById(id: string, data: IUpdateBlog): Promise<unknown | IBlog>;
   getBlogEmail(email: string, data: IUpdateBlog): Promise<unknown | IBlog>;
-  getUnfilteredBlogs(id: string): Promise<unknown | IBlog>;
+  getUnfilteredBlogs(id: string): Promise<Array<IBlog> | unknown>;
   getFilteredBlogs(
     page: number,
     limit: number,
@@ -79,5 +79,5 @@ export interface IBlogRepositories {
       name?: string;
       order?: string;
     }
-  ): Promise<unknown | IBlog>;
+  ): Promise<Array<IBlog> | unknown>;
 }

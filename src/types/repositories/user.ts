@@ -68,7 +68,7 @@ export interface IUserRepositories {
   deleteUserByEmail(email: string, data: IUpdateUser): Promise<unknown | IUserResponse>;
   getUserById(id: string): Promise<unknown | IUserResponse>;
   getUserByEmail(email: string): Promise<unknown | IUserResponse>;
-  getUnfilteredUsers(id: string): Promise<unknown | IUsersResponse>;
+  getUnfilteredUsers(id: string): Promise<Array<IUsersResponse> | unknown>;
   getFilteredUsers(
     page: number,
     limit: number,
@@ -77,5 +77,5 @@ export interface IUserRepositories {
       name?: string;
       order?: string;
     }
-  ): Promise<unknown | IUsersResponse>;
+  ): Promise<Array<IUsersResponse> | unknown>;
 }
