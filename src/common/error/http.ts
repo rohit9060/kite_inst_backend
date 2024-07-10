@@ -1,4 +1,4 @@
-import { ZodError } from "zod";
+import { ZodError } from 'zod';
 
 export class HttpError extends Error {
   statusCode: number;
@@ -10,7 +10,7 @@ export class HttpError extends Error {
     super(message);
     this.statusCode = statusCode;
     this.message = message;
-    this.status = statusCode < 500 ? "fail" : "error";
+    this.status = statusCode < 500 ? 'fail' : 'error';
     this.err = err;
   }
 }
@@ -35,7 +35,7 @@ export class UnauthorizedHttpError extends HttpError {
 
 export class ForbiddenHttpError extends HttpError {
   constructor(err?: any) {
-    super("Forbidden", 403, err);
+    super('Forbidden', 403, err);
   }
 }
 
@@ -59,6 +59,12 @@ export class BadRequestHttpError extends HttpError {
 
 export class DatabaseError extends HttpError {
   constructor(message?: string, err?: any) {
-    super(message || "Database error", 500, err);
+    super(message || 'Database error', 500, err);
+  }
+}
+
+export class InternalServerError extends HttpError {
+  constructor(message?: string, err?: any) {
+    super(message || 'Internal server error', 500, err);
   }
 }
