@@ -51,10 +51,6 @@ export interface IUpdateUser {
   otp?: string | null;
 }
 
-export interface IDeleteUser {
-  id: string;
-}
-
 export interface IUserResponse {
   user: IUser | null;
 }
@@ -72,7 +68,7 @@ export interface IUserRepositories {
   deleteUserByEmail(email: string, data: IUpdateUser): Promise<unknown | IUserResponse>;
   getUserById(id: string): Promise<unknown | IUserResponse>;
   getUserByEmail(email: string): Promise<unknown | IUserResponse>;
-  getUnfilteredUsers(id: string, data: IUpdateUser): Promise<unknown | IUsersResponse>;
+  getUnfilteredUsers(id: string): Promise<unknown | IUsersResponse>;
   getFilteredUsers(
     page: number,
     limit: number,
