@@ -19,7 +19,7 @@ model User {
   roles String[] @default(["user"])
 
   isVerified Boolean @default(false)
-  isApproved Boolean @default(true)
+  isApproved Boolean @default(false)
 
   token String? @unique
   otp   String?

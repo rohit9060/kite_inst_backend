@@ -36,6 +36,7 @@ function configureApp(app: express.Application) {
 
   // routes
 
+  //
   // health check
   app.get('/', async (req, res, next) => {
     res.status(200).json({
