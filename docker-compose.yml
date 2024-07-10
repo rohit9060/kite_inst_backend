@@ -1,16 +1,15 @@
-version: "3"
+version: '3'
 
-#  start redis and mongodb
 services:
+  postgres:
+    image: postgres:16-alpine3.20
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
   redis:
     image: redis:7.2.4-alpine
     ports:
-      - "6379:6379"
-
-  mongo:
-    image: mongo:latest
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: mongo
-      MONGO_INITDB_ROOT_PASSWORD: mongo
+      - '6379:6379'

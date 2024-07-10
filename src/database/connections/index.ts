@@ -1,12 +1,18 @@
-import mongoose from "mongoose";
-import { logger } from "@/common/config";
+import { logger } from '@/common/config';
+import { PrismaClient } from '@prisma/client';
 
-export const connectDB = async (uri: string) => {
-  try {
-    await mongoose.connect(uri);
-    logger.info("Connected to MongoDB");
-  } catch (error: any) {
-    logger.error(error.message);
-    process.exit(1);
-  }
-};
+const prisma = new PrismaClient();
+prisma
+  .$connect()
+  .then(() => {
+    logger.info('database connected');
+  })
+  .catch(() => {
+    logger.error('database not connected');
+  });
+
+prisma.$disconnect().then(() => {
+  logger.info('database disconnected');
+});
+
+export { prisma };

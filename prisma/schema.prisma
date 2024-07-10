@@ -1,0 +1,161 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  phone    String
+  password String
+
+  avatar String?
+
+  roles String[] @default(["user"])
+
+  isVerified Boolean @default(false)
+  isApproved Boolean @default(true)
+
+  token String? @unique
+  otp   String?
+
+  createdCourses Course[] @relation("CourseAuthor")
+  createdBlogs   Blog[]   @relation("BlogAuthor")
+
+  favoritedBlogs   Blog[]   @relation("BlogFavorite")
+  favoritedCourses Course[] @relation("CourseFavorite")
+
+  BlogComment BlogComment[] @relation("BlogCommentAuthor")
+
+  likedBlogs   Blog[]   @relation("BlogLike")
+  likedCourses Course[] @relation("CourseLike")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// category
+model Category {
+  id   String @id @default(uuid())
+  name String
+  slug String @unique
+}
+
+// tags
+model Tags {
+  id   String @id @default(uuid())
+  name String
+  slug String @unique
+}
+
+enum CourseType {
+  online
+  offline
+}
+
+// course
+model Course {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  description String
+  price       Float
+  images      String[]
+
+  courseType CourseType
+
+  category String
+  tags     String[]
+
+  modules CourseModule[]
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], name: "CourseAuthor", onDelete: Cascade)
+
+  favoritedUsers User[] @relation("CourseFavorite")
+
+  likedUsers User[] @relation("CourseLike")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CourseModule {
+  id          String @id @default(uuid())
+  CourseId    String
+  title       String
+  slug        String @unique
+  description String
+
+  courseId String
+  Course   Course @relation(fields: [courseId], references: [id])
+
+  lessons CourseLesson[]
+
+  isPublic Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CourseLesson {
+  id          String @id @default(uuid())
+  title       String
+  slug        String @unique
+  description String
+
+  thumbnail String?
+
+  note       String?
+  assignment String?
+
+  CourseId       String
+  courseModuleId String
+  CourseModule   CourseModule @relation(fields: [courseModuleId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// blog
+model Blog {
+  id          String @id @default(uuid())
+  title       String
+  slug        String @unique
+  description String
+
+  tags     String[]
+  category String
+
+  isPublic Boolean @default(false)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], name: "BlogAuthor", onDelete: Cascade)
+
+  favoritedUsers User[] @relation("BlogFavorite")
+  likedUsers     User[] @relation("BlogLike")
+
+  comments BlogComment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlogComment {
+  id      String @id @default(uuid())
+  content String
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], name: "BlogCommentAuthor", onDelete: Cascade)
+
+  blogId String
+  blog   Blog   @relation(fields: [blogId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
